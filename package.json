@@ -1,0 +1,27 @@
+{
+  "name": "conversion-scripts",
+  "version": "1.0.0",
+  "description": "A group of scripts used to convert the styled-component styles in our project to scss-modules.wq",
+  "main": "style-file-transformer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Cameron + Claude.ai",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.20.1",
+    "prettier": "3.5.1",
+    "scss": "^0.2.4"
+  },
+  "dependencies": {
+    "glob": "^11.0.1",
+    "util": "^0.12.5"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  }
+}
