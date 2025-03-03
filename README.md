@@ -1,21 +1,22 @@
-# sc_to_scss_modules
+# The Transformer!
+This is still just several scripts that are being run in sequence by another script but it'll be easier to refer to it by name than by "the scripts," so hereafter I'm going to refer to it as **The Transformer**.
 
 ## Transforms Styled-Components and their use to SCSS-Modules and HTML elements!
-The easiest way to run this script is
+The easiest way to run **The Transformer** is
 1. Clone this repo
 2. cd into the repo in the terminal and type
 3. enter `node convert.js [path/to/target/directory]` where `directory` is the parent directory for all the files you wish to convert.
 
 Conversions will occur to React `.tsx` files, Styled-Components `.styles.ts` files and a new `.module.scss` file will be created alongside every `.styles.ts` file.
 
+
+
 ## What does this all do? Can you explain it to me in way, way too much detail?
 Have we met?   
 
-These scripts can be used to transform `styled-components` definitions into `scss-module` class definitions provided they don't use
-1. passed props
-2. theme values
+**The Transformer** can be used to transform `styled-components` definitions into `scss-module` class definitions provided they don't use passed props or theme values. `styled-component` definitions with those properties are ignored by **The Transformer**.
 
-Additionally, once the `styled-component` styles have been converted the same series of scripts will find all references to the `styled-components` that have been transformed in React .tsx files that have imported the `styled-components`' `.styles.ts` file and then convert references to the `styled-components`
+Additionally, once the `styled-component` styles have been converted **The Transformer** will find all references to the `styled-components` that have been transformed in React .tsx files that have imported the `styled-components`' `.styles.ts` file and then convert references to the `styled-components`
 
 Find convertable `styled-component` definitions in `.styles.ts` files and
 convert them into valid CSS/SCSS code
@@ -61,7 +62,7 @@ export PageTitle = styled(PageTitle)`
 `;
 ```
 
-When the script is run, pointing at parent directory for these two files, it will create a new file called `MyPage.module.scss`. Any convertable styled-component styles from `MyPage.styles.ts` will be converted and written into the page resulting in a page that looks like the following:
+When **The Transformer** is run, pointing at parent directory for these two files, it will create a new file called `MyPage.module.scss`. Any convertable styled-component styles from `MyPage.styles.ts` will be converted and written into the page resulting in a page that looks like the following:
 ```scss
 @use '../../lib/styles/mixins/breakpoints';
 
@@ -76,11 +77,11 @@ When the script is run, pointing at parent directory for these two files, it wil
 }
 ```
 Note a couple things about the above. Firstly, an `@use` statement has been written into the top of the page. This is done dynamically and the path to each `@use` statement should be correct based on the relative location of this file to the `breakpoints` file.
-Secondly, the `PageTitle` style from `MyPage.styles.ts` is omitted from this file. It is modifying a component and therefore doesn't "qualify" for conversion or transferral. The `PageTitle` definition is ignored when the script parses the contents of the `MyPage.styles.ts` file.
+Secondly, the `PageTitle` style from `MyPage.styles.ts` is omitted from this file. It is modifying a component and therefore doesn't "qualify" for conversion or transferral. The `PageTitle` definition is ignored when **The Transformer** parses the contents of the `MyPage.styles.ts` file.
 
-The scripts would then locate any files within the parent directory where the script is running that import `MyPage.styles.ts`. Doing so it would locate `MyPage.tsx` and begin parsing it. It would parse the contents of the file as text looking for exact matches for any of the styles that had been modified in the previous steps. Upon locating a match it would determine if it had found an opening or closing tag. If it were an opening tag it would replace the "S." + [StyledComponentName] with the HTML element that the `styled-component` definition was modifying. Then it would insert `className={styles.[styledComponentName]}` where `styledComponentName` is the new class name that was created in an earlier step. It's just the original `styled-component` name with the first letter shifted to lowercase. Other attributes should remain as they were and any self-closing tags (like `img` tags) should still self-close properly.
+**The Transformer** would then locate any files within the parent directory where **The Transformer** is running that import `MyPage.styles.ts`. Doing so it would locate `MyPage.tsx` and begin parsing it. It would parse the contents of the file as text looking for exact matches for any of the styles that had been modified in the previous steps. Upon locating a match it would determine if it had found an opening or closing tag. If it were an opening tag it would replace the "S." + [StyledComponentName] with the HTML element that the `styled-component` definition was modifying. Then it would insert `className={styles.[styledComponentName]}` where `styledComponentName` is the new class name that was created in an earlier step. It's just the original `styled-component` name with the first letter shifted to lowercase. Other attributes should remain as they were and any self-closing tags (like `img` tags) should still self-close properly.
 
-Once it had searched through the whole file and made any replacements the script will insert an import statement into the top of the document so that `MyPage.tsx` is able to import the styles properly from `MyPage.module.scss`.
+Once it had searched through the whole file and made any replacements **The Transformer** will insert an import statement into the top of the document so that `MyPage.tsx` is able to import the styles properly from `MyPage.module.scss`.
 
 So now our original files would all look like the following:
 ```typescript
@@ -99,7 +100,7 @@ export default function MyPage({title}: PropsWithChildren<{title: string}>) {
 // MyPage.styles.ts
 import styled from 'styled-components/macro';
 import { PageTitle } from 'components/PageTitle/PageTitle'; 
-import { media } from 'lib/media-queries/mixins'; // No longer needed but the script doesn't delete this (yet) :(
+import { media } from 'lib/media-queries/mixins'; // No longer needed but The Transformer doesn't delete this (yet) :(
 
 export PageTitle = styled(PageTitle)`
   font-family: Arial, Helvetica, sans-serif;
@@ -109,3 +110,5 @@ export PageTitle = styled(PageTitle)`
 and the `.module.scss` file created above would live in the same parent directory as these first two files.
 
 With any luck, there shouldn't be any difference in the appearance of the pages before and after the conversion. There may be a few small linting errors and the like but hopefully those will be easily resolved!
+
+**The Transformer!**
