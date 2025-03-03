@@ -16,14 +16,17 @@ Have we met?
 
 **The Transformer** can be used to transform `styled-components` definitions into `scss-module` class definitions provided they don't use passed props or theme values. `styled-component` definitions with those properties are ignored by **The Transformer**.
 
-Additionally, once the `styled-component` styles have been converted **The Transformer** will find all references to the `styled-components` that have been transformed in React .tsx files that have imported the `styled-components`' `.styles.ts` file and then convert references to the `styled-components`
+Naturally, `styled-component` definitions are defined in separate files, each ending with `.styles.ts`. Once the definitions in those files have been converted **The Transformer** will locate any React `.tsx` files that have imported these `.styles.ts` files. Then the React `.tsx` files will be parsed and any instances of the `styled-component` definitions will be replaced by with the appropriate HTML element and a `className` attribute that uses the new SCSS class created previously.
 
-Find convertable `styled-component` definitions in `.styles.ts` files and
-convert them into valid CSS/SCSS code
-write that new code into an appropriately-named `.module.scss` file
-delete any such copied `styled-component` definitions from the original file
-write an import statement into the document where the `module.scss` styles are to be used
-write an `@use` statement into the top of the `module.scss` file so that it will have access to shared breakpoint definitions
+**The Transformer**
+
+1. Finds convertable `styled-component` definitions in `.styles.ts` files, and
+1. converts them into valid CSS/SCSS code, and
+1. writes that new code into an appropriately-named `.module.scss` file, and
+1. deletes any such copied `styled-component` definitions from the original file, and
+1. writes an import statement into the document where the `module.scss` styles are to be used, and
+1. writes an `@use` statement into the top of the `module.scss` file so that it will have access to shared breakpoint definitions.
+
 The instances of the `styled-components` that have been thus converted are then located in the React `.tsx` files and replaced with
 the HTML element the `styled-components` definition had been modifying
 and `className={styles.[className]}` is inserted into the tag where `className` is the previous name of the `styled-component` with the first letter switched to lowercase.
@@ -34,8 +37,8 @@ For example, let's suppose we're starting with two files: `MyPage.tsx` and `MyPa
 import * as S from './MyPage.styles';
 
 export default function MyPage({title}: PropsWithChildren<{title: string}>) {
-  <S.PageContainer>
-    <S.PageTitle id={`${title}-page-title'}>{title}</S.PageTitle>
+  <S.PageContainer id={`${title}-page-container'}>
+    <S.PageTitle>{title}</S.PageTitle>
     {children}
   </S.PageContainer>
 }
@@ -90,8 +93,8 @@ import styles from './Checkout.module.scss'; // --> New!
 import * as S from './MyPage.styles';  // Still here b/c of unchanged styled-component
 
 export default function MyPage({title}: PropsWithChildren<{title: string}>) {
-  <div className={styles.pageContainer}>
-    <S.PageTitle id={`${title}-page-title'}>{title}</S.PageTitle>
+  <div className={styles.pageContainer} id={`${title}-page-container'}>
+    <S.PageTitle>{title}</S.PageTitle>
     {children}
   </div>
 }
